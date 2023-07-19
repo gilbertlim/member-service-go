@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"github.com/gilbertlim/member-service-go/models"
 	"github.com/gilbertlim/member-service-go/pkg/setting"
 	"github.com/gilbertlim/member-service-go/routers"
 	"github.com/gin-gonic/gin"
@@ -11,6 +12,7 @@ import (
 
 func init() {
 	setting.Setup()
+	models.Setup()
 }
 
 func main() {
@@ -20,7 +22,6 @@ func main() {
 	readTimeout := setting.ServerSetting.ReadTimeout
 	writeTimeout := setting.ServerSetting.WriteTimeout
 	endPoint := fmt.Sprintf(":%d", setting.ServerSetting.HttpPort)
-	fmt.Println(endPoint)
 
 	maxHeaderBytes := 1 << 20
 

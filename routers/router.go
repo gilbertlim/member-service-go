@@ -10,7 +10,8 @@ func InitRouter() *gin.Engine {
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
 
-	r.GET("/test", api.GetTest)
+	r.GET("/", api.GetMembers)
+	r.GET("/:memberId", api.GetMembers)
 
 	return r
 }

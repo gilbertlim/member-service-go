@@ -1,4 +1,4 @@
-package api
+package main
 
 import (
 	"github.com/gilbertlim/member-service-go/pkg/app"
@@ -7,7 +7,7 @@ import (
 	"net/http"
 )
 
-func GetTest(c *gin.Context) {
+func GetMembers(c *gin.Context) {
 	appG := app.Gin{C: c}
 	appG.Response(http.StatusOK, e.SUCCESS, map[string]string{
 		"message": "good test",
