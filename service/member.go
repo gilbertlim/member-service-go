@@ -1,6 +1,7 @@
 package service
 
 import (
+	"github.com/fatih/structs"
 	"github.com/gilbertlim/member-service-go/models"
 )
 
@@ -13,14 +14,7 @@ type Member struct {
 }
 
 func (m *Member) CreateMember() (int64, error) {
-	member := map[string]interface{}{
-		"memberId": m.MemberId,
-		"name":     m.Name,
-		"email":    m.Email,
-		"phone":    m.Phone,
-		"address":  m.Address,
-	}
-	rowsAffected, err := models.CreateMember(member)
+	rowsAffected, err := models.CreateMember(structs.Map(m))
 
 	return rowsAffected, err
 }

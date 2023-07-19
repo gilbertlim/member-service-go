@@ -3,10 +3,12 @@ module github.com/gilbertlim/member-service-go
 go 1.18
 
 require (
+	github.com/fatih/structs v1.1.0
 	github.com/gin-gonic/gin v1.9.1
 	github.com/go-ini/ini v1.67.0
 	github.com/jinzhu/gorm v1.9.16
 	github.com/lib/pq v1.1.1
+	github.com/mitchellh/mapstructure v1.5.0
 )
 
 require (
