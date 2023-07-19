@@ -10,8 +10,11 @@ func InitRouter() *gin.Engine {
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
 
-	r.GET("/", api.GetMembers)
-	r.GET("/:memberId", api.GetMembers)
+	m := r.Group("members")
+	{
+		m.POST("/", api.CreateMember)
+		m.GET("/", api.GetMembers)
+	}
 
 	return r
 }
