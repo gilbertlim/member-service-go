@@ -1,8 +1,7 @@
 package models
 
 import (
-	"github.com/mitchellh/mapstructure"
-	"log"
+	"github.com/gilbertlim/member-service-go/pkg/dto"
 )
 
 type TblMember struct {
@@ -13,15 +12,16 @@ type TblMember struct {
 	Address  string `json:"address"`
 }
 
-func CreateMember(data map[string]interface{}) (int64, error) {
-	member := &TblMember{}
-	err := mapstructure.Decode(data, &member)
-	if err != nil {
-		log.Fatal(err)
+func CreateMember(memberDto dto.MemberDto) (int64, error) {
+	member := &TblMember{
+		MemberId: memberDto.MemberId,
+		Name:     memberDto.Name,
+		Email:    memberDto.Email,
+		Phone:    memberDto.Phone,
+		Address:  memberDto.Address,
 	}
 
 	result := db.Create(member)
-
 	return result.RowsAffected, result.Error
 }
 
@@ -29,6 +29,19 @@ func GetMembers() ([]*TblMember, error) {
 	var members []*TblMember
 
 	results := db.Find(&members)
-
 	return members, results.Error
+}
+
+func GetMember(memberId string) (*TblMember, error) {
+	member := &TblMember{
+		MemberId: memberId,
+	}
+
+	result := db.Find(&member)
+	return member, result.Error
+}
+
+func DeleteMember(memberId string) (int64, error) {
+	result := db.Where("member_id = ?", memberId).Delete(&TblMember{})
+	return result.RowsAffected, result.Error
 }

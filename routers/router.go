@@ -14,6 +14,8 @@ func InitRouter() *gin.Engine {
 	{
 		m.POST("/", api.CreateMember)
 		m.GET("/", api.GetMembers)
+		m.GET("/:memberId", api.GetMember)
+		m.DELETE("/:memberId", api.DeleteMember)
 	}
 
 	return r
