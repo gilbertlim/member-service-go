@@ -12,8 +12,8 @@ func InitRouter() *gin.Engine {
 
 	m := r.Group("members")
 	{
-		m.POST("/", api.CreateMember)
-		m.GET("/", api.GetMembers)
+		m.POST("", api.CreateMember)
+		m.GET("", api.GetMembers)
 		m.GET("/:memberId", api.GetMember)
 		m.DELETE("/:memberId", api.DeleteMember)
 	}
