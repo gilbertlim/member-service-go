@@ -1,0 +1,8 @@
+server:
+  runMode: debug
+  httpPort: 8080
+  readTimeout: 60
+  writeTimeout: 60
+
+database:
+  type: postgres

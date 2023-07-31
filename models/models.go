@@ -2,10 +2,11 @@ package models
 
 import (
 	"fmt"
-	"github.com/gilbertlim/member-service-go/pkg/setting"
+	"github.com/gilbertlim/member-service-go/config"
 	"github.com/jinzhu/gorm"
 	_ "github.com/lib/pq"
 	"log"
+	"os"
 	"time"
 )
 
@@ -20,11 +21,12 @@ type Model struct {
 
 func Setup() {
 	var err error
-	db, err = gorm.Open(setting.DatabaseSetting.Type, fmt.Sprintf("postgres://%s:%s@%s/%s?sslmode=disable",
-		setting.DatabaseSetting.User,
-		setting.DatabaseSetting.Password,
-		setting.DatabaseSetting.Host,
-		setting.DatabaseSetting.Name))
+	db, err = gorm.Open(config.RuntimeConf.Database.Type, fmt.Sprintf("postgres://%s:%s@%s/%s?sslmode=disable",
+		os.Getenv("DB_USER"),
+		os.Getenv("DB_PASSWORD"),
+		os.Getenv("DB_HOST"),
+		os.Getenv("DB_NAME"),
+	))
 
 	if err != nil {
 		log.Fatalf("models.Setup() err: %v", err)

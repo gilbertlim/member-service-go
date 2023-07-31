@@ -1,49 +1,34 @@
 package setting
 
 import (
-	"github.com/go-ini/ini"
-	"log"
-	"time"
+	"fmt"
+	"github.com/gilbertlim/member-service-go/config"
+	"github.com/spf13/viper"
+	"os"
 )
 
-type Server struct {
-	RunMode      string
-	HttpPort     int
-	ReadTimeout  time.Duration
-	WriteTimeout time.Duration
-}
-
-var ServerSetting = &Server{}
-
-type Database struct {
-	Type     string
-	User     string
-	Password string
-	Host     string
-	Name     string
-}
-
-var DatabaseSetting = &Database{}
-
-var cfg *ini.File
-
 func Setup() {
-	var err error
-	cfg, err = ini.Load("conf/app.ini")
+	profile := initProfile()
+	viper.SetConfigName(profile)
+	viper.AddConfigPath(".")
+	viper.SetConfigType("yaml")
+
+	err := viper.ReadInConfig()
 	if err != nil {
-		log.Fatalf("setting.Setup, fail to parse 'conf/app.ini': %v", err)
+		panic(err)
 	}
 
-	mapTo("server", ServerSetting)
-	mapTo("database", DatabaseSetting)
-
-	ServerSetting.ReadTimeout = ServerSetting.ReadTimeout * time.Second
-	ServerSetting.WriteTimeout = ServerSetting.WriteTimeout * time.Second
+	err = viper.Unmarshal(&config.RuntimeConf)
+	if err != nil {
+		panic(err)
+	}
 }
 
-func mapTo(section string, v interface{}) {
-	err := cfg.Section(section).MapTo(v)
-	if err != nil {
-		log.Fatalf("cfg.MapTo %s err: %v", section, err)
+func initProfile() string {
+	profile := os.Getenv("GO_PROFILE")
+	if len(profile) <= 0 {
+		profile = "local"
 	}
+	fmt.Println("GO_PROFILE: " + profile)
+	return profile
 }

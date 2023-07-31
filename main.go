@@ -2,12 +2,14 @@ package main
 
 import (
 	"fmt"
+	"github.com/gilbertlim/member-service-go/config"
 	"github.com/gilbertlim/member-service-go/models"
 	"github.com/gilbertlim/member-service-go/pkg/setting"
 	"github.com/gilbertlim/member-service-go/routers"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
+	"time"
 )
 
 func init() {
@@ -16,20 +18,20 @@ func init() {
 }
 
 func main() {
-	gin.SetMode(setting.ServerSetting.RunMode)
+	gin.SetMode(config.RuntimeConf.Server.RunMode)
 
 	routersInit := routers.InitRouter()
-	readTimeout := setting.ServerSetting.ReadTimeout
-	writeTimeout := setting.ServerSetting.WriteTimeout
-	endPoint := fmt.Sprintf(":%d", setting.ServerSetting.HttpPort)
+	readTimeout := config.RuntimeConf.Server.ReadTimeout
+	writeTimeout := config.RuntimeConf.Server.WriteTimeout
+	endPoint := fmt.Sprintf(":%d", config.RuntimeConf.Server.HttpPort)
 
 	maxHeaderBytes := 1 << 20
 
 	server := &http.Server{
 		Addr:           endPoint,
 		Handler:        routersInit,
-		ReadTimeout:    readTimeout,
-		WriteTimeout:   writeTimeout,
+		ReadTimeout:    time.Duration(readTimeout) * time.Second,
+		WriteTimeout:   time.Duration(writeTimeout) * time.Second,
 		MaxHeaderBytes: maxHeaderBytes,
 	}
 
